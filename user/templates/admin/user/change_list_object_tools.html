@@ -1,0 +1,20 @@
+{% load i18n admin_urls %}
+
+{% block object-tools-items %}
+  {% if opts.model_name == 'user' %}
+  <li>
+    <a href="{% add_preserved_filters '../newsignup' is_popup to_field %}" class="golink">
+      {% blocktrans with cl.opts.verbose_name_plural as name %}New Sign-ups{% endblocktrans %}
+    </a>
+  </li>
+  {% endif %}
+
+  {% if has_add_permission %}
+  <li>
+    {% url cl.opts|admin_urlname:'add' as add_url %}
+    <a href="{% add_preserved_filters add_url is_popup to_field %}" class="addlink">
+      {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
+    </a>
+  </li>
+  {% endif %}
+{% endblock %}

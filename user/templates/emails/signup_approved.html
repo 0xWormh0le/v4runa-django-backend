@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .btn {
+            padding: 0.5em 1em;
+            background-color: #086e9e;
+            color: white !important;
+            border-radius: 5px;
+            display: inline-block;
+            transition: opacity ease .5s;
+            margin: 0.5em;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            opacity: .7;
+        }
+
+        .btn-primary {
+            background-color: #086e9e;
+        }
+    </style>
+    <title>Varuna Greetings</title>
+</head>
+<body>
+    <h1>👏 Your signup request to Varuna has been approved</h1>
+    <p>Hi {{ user.first_name|title }} {{ user.last_name|title }},</p>
+    <p>Congrats! You can now start using Varuna.</p>
+    <p>Sign in email: {{ user.email }}</p>
+    
+    <a class="btn btn-primary" href="{{ appname }}/login">Go to Varuna</a>
+</body>
+</html>

@@ -1,0 +1,34 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pylint = "*"
+
+[packages]
+django = "==3.1"
+django-cors-headers = "*"
+django-extensions = "*"
+django-pandas = "*"
+djangorestframework = "*"
+djangorestframework-simplejwt = "*"
+drf-yasg = "*"
+googlemaps = "*"
+jsonfield = "*"
+numpy = "*"
+packaging = "*"
+pandas = "*"
+psycopg2-binary = "==2.8.3"
+python-dateutil = "*"
+python-dotenv = "*"
+pyyaml = "*"
+scrapy = "*"
+uritemplate = "*"
+zipcodes = "*"
+"django-storages[google]" = "*"
+boto3 = "*"
+django-cleanup = "*"
+
+[requires]
+python_version = "3.7"

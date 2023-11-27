@@ -1,0 +1,19 @@
+# Thisis GCP App Engine configuration
+
+# [START django_app]
+runtime: python37
+
+instance_class: F4_1G
+
+handlers:
+- url: /static
+  secure: always
+  static_dir: static/
+
+- url: /.*
+  secure: always
+  script: auto
+
+includes:
+- env.yaml
+# [END django_app]

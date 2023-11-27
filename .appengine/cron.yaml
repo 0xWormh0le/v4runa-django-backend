@@ -1,0 +1,4 @@
+cron:
+- description: "weekly report mail"
+  url: /cron/weekly-report-mail
+  schedule: every monday 00:00

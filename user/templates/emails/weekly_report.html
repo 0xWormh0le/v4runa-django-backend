@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+2&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+2:wght@400;500&display=swap');
+        
+        .WeeklyReport {
+            font-family: 'Baloo Chettan 2', cursive;
+         }
+
+         .WeeklyReport__body {
+            width: 700px;
+            padding: 2rem;
+         }
+
+         .WeeklyReport__logo {
+            width: 2em;
+            height: auto;
+         }
+
+         .WeeklyReport__title {
+            font-size: 2em;
+            line-height: 1.2;
+         }
+
+         .WeeklyReport__last-week {
+            font-size: 1.5em;
+         }
+
+         .WeeklyReport__tile {
+            display: flex;
+            flex: 1 1;
+            border-radius: 0.25rem;
+            padding: 1rem;
+         }
+
+         .WeeklyReport__value {
+            font-weight: 500;
+            font-size: 2em;
+         }
+
+         .WeeklyReport__unit {
+            font-size: 1.5em;
+         }
+
+         .text-center {
+            text-align: center;
+         }
+
+         .text-right {
+            text-align: right;
+         }
+
+         .col-4 {
+            flex: 0 0 33.33333%;
+            max-width: 33.33333%;
+            display: flex;
+         }
+
+         .d-flex {
+            display: flex;
+            flex-wrap: wrap;
+         }
+
+         .card {
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid #cccdd0;
+            flex: 1 1 auto;
+            min-height: 1px;
+            padding: 0.8rem;
+         }
+    </style>
+    <title>Varuna Weekly Report</title>
+</head>
+<body class="WeeklyReport">
+    <div class="WeeklyReport__body">
+        <div class="WeeklyReport__title text-center">Weekly Chlorine Residual Weekly Report<br>{{ date }}</div>
+        <div class="WeeklyReport__last-week text-center" style="margin-bottom: 3rem">{{ week_start }}&nbsp;-&nbsp;{{ week_end }}</div>
+        <div class="d-flex">
+           <div class="col-4">
+              <div class="text-center WeeklyReport__tile">
+                 <div class="card">
+                    <div>{{ sensor_address }}</div>
+                    <strong>Chlorine Residual</strong>
+                    <div class="WeeklyReport__value">{{ latest_data|floatformat:3 }}</div>
+                    <div class="WeeklyReport__unit">mg/l</div>
+                 </div>
+              </div>
+           </div>
+           <div class="col-4">
+              <div class="text-center WeeklyReport__tile">
+                 <div class="card">
+                    <div>Count of Readings<br>Below 0.5 mg/L</div>
+                    <div class="WeeklyReport__value">{{ below_05_count }}</div>
+                 </div>
+              </div>
+           </div>
+           <div class="col-4">
+              <div class="text-center WeeklyReport__tile">
+                 <div class="card">
+                    <div>Count of Readings<br>above 2.5 mg/L</div>
+                    <div class="WeeklyReport__value">{{ above_25_count }}</div>
+                 </div>
+              </div>
+           </div>
+           <div class="col-4">
+              <div class="text-center WeeklyReport__tile">
+                 <div class="card">
+                    <div>Average CL2 reading<br>over the last week</div>
+                    <div class="WeeklyReport__value">{{ avg|floatformat:3 }}</div>
+                    <div class="WeeklyReport__unit">mg/L</div>
+                 </div>
+              </div>
+           </div>
+           <div class="col-4">
+              <div class="text-center WeeklyReport__tile">
+                 <div class="card">
+                    <div>Max CL2 reading<br>over the last week</div>
+                    <div class="WeeklyReport__value">{{ max|floatformat:3 }}</div>
+                    <div class="WeeklyReport__unit">mg/L</div>
+                 </div>
+              </div>
+           </div>
+           <div class="col-4">
+              <div class="text-center WeeklyReport__tile">
+                 <div class="card">
+                    <div>Min CL2 reading<br>over the last week</div>
+                    <div class="WeeklyReport__value">{{ min|floatformat:3 }}</div>
+                    <div class="WeeklyReport__unit">mg/L</div>
+                 </div>
+              </div>
+           </div>
+        </div>
+        <div class="text-right d-flex" style="padding: 1rem; justify-content: flex-end; align-items: center;">
+            Powered by Varuna
+            <img class="WeeklyReport__logo" src="https://www.varunacl.com/varuna-favicon2.png">
+        </div>
+     </div>
+</body>
+</html>

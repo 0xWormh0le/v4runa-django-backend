@@ -1,0 +1,28 @@
+water_system_id,year,asset_name,projected_unscheduled_amount,projected_scheduled_amount,allocated_budget,average_service_life
+TX1010013,2019,Organization ,0.00,0.00,0.00,0
+TX1010013,2019,Franchises ,0.00,0.00,0.00,0
+TX1010013,2019,Land and Land Rights,178794.70,76626.30,277594.00,0
+TX1010013,2019,Structures and Improvements ,319766.30,137042.70,583629.00,0
+TX1010013,2019,Collecting and Impounding Reservoirs,0.00,0.00,0.00,0
+TX1010013,2019,"Lake, River, and Other Intakes",0.00,0.00,0.00,0
+TX1010013,2019,Wells and Springs,284158.70,121782.30,405941.00,0
+TX1010013,2019,Infiltration Gallaries and Tunnels,0.00,0.00,0.00,0
+TX1010013,2019,Supply Mains,3020210.90,1294376.10,4314587.00,0
+TX1010013,2019,Power Generation Equipment ,170506.70,73074.30,284563.00,0
+TX1010013,2019,Pumping Equipment,581981.40,249420.60,1019130.00,22
+TX1010013,2019,Water Treatments Equipment,42337.40,18144.60,113076.00,0
+TX1010013,2019,Distribution Reservoirs and Standpipes,785701.70,336729.30,1272813.00,30
+TX1010013,2019,Transmission and Sistribution Lines,2506658.70,1074282.30,3577791.00,0
+TX0150018,2019,Services ,203349.30,87149.70,290499.00,0
+TX0150018,2019,Meters and meter Installations,643590.50,275824.50,1082693.00,10
+TX0150018,2019,Hydrants ,158139.10,67773.90,217913.00,8
+TX0150018,2019,Backflow Prevention Devices,0.00,0.00,0.00,0
+TX0150018,2019,Other Plant and Miscellaneous Equipment,0.00,0.00,0.00,0
+TX0150018,2019,Office Furniture and Equipment,35252.00,15108.00,51461.00,0
+TX0150018,2019,Data Processing Equipment,38245.90,16391.10,52537.00,0
+TX0150018,2019,Transportation Equipment ,0.00,0.00,0.00,0
+TX0150018,2019,Stores Equipment,0.00,0.00,0.00,0
+TX0150018,2019,"Tools, Shop and Garage Equipment ",27053.60,11594.40,36854.00,0
+TX0150018,2019,Laboratory Equipment ,0.00,0.00,0.00,0
+TX0150018,2019,Power Operated Equipment ,9130.80,3913.20,13044.00,0
+TX0150018,2019,Communciation Equipment ,53081.70,22749.30,75831.00,0

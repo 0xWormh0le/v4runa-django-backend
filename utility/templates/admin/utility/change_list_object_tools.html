@@ -1,0 +1,39 @@
+{% load i18n admin_urls %}
+
+{% block object-tools-items %}
+  {% if opts.model_name == 'waterutility' or opts.model_name == 'waterquality' or opts.model_name == 'assetfinance' or opts.model_name == 'sensor' or opts.model_name == 'technician' %}
+  <li>
+    {% url cl.opts|admin_urlname:'import' as import_url %}
+    <a href="{% add_preserved_filters import_url is_popup to_field %}" class="addlink">
+      {% blocktrans with cl.opts.verbose_name_plural as name %}Import {{ name }}{% endblocktrans %}
+    </a>
+  </li>
+  {% endif %}
+
+  {% if opts.model_name == 'sensordatarecord' %}
+  <li>
+    {% url cl.opts|admin_urlname:'populatetestrecords' as populate_test_records_url %}
+    <a href="{% add_preserved_filters populate_test_records_url is_popup to_field %}" class="addlink">
+      {% blocktrans with cl.opts.verbose_name_plural as name %}Populate test {{ name }}{% endblocktrans %}
+    </a>
+  </li>
+  {% endif %}
+
+  {% if opts.model_name == 'alert' %}
+  <li>
+    {% url cl.opts|admin_urlname:'createallocations' as create_jobs_url %}
+    <a href="{% add_preserved_filters create_jobs_url is_popup to_field %}" class="addlink">
+      {% blocktrans with cl.opts.verbose_name_plural as name %}Create jobs for new {{ name }}{% endblocktrans %}
+    </a>
+  </li>
+  {% endif %}
+
+  {% if has_add_permission %}
+  <li>
+    {% url cl.opts|admin_urlname:'add' as add_url %}
+    <a href="{% add_preserved_filters add_url is_popup to_field %}" class="addlink">
+      {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
+    </a>
+  </li>
+  {% endif %}
+{% endblock %}

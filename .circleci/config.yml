@@ -1,0 +1,130 @@
+# Python CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-python/ for more details
+#
+version: 2.19.00
+
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
+      - image: circleci/python:3.7.4-buster
+        environment:
+          PIPENV_VENV_IN_PROJECT: true
+          DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      - image: circleci/postgres:11.4
+        environment:
+          VARUNA_DB_NAME: 'circle_test'
+          VARUNA_DB_HOST: 'localhost'
+          VARUNA_DB_USER: 'root'
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "Pipfile" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            sudo pip install pipenv
+            pipenv install
+
+      - save_cache:
+          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          paths:
+            - ".venv"
+            - "/usr/local/bin"
+            - "/usr/local/lib/python3.6/site-packages"
+
+      # run tests!
+      # this example uses Django's built-in test-runner
+      # other common Python testing frameworks include pytest and nose
+      # https://pytest.org
+      # https://nose.readthedocs.io
+      - run:
+          name: run tests
+          command: |
+            pipenv run python manage.py test
+
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
+
+      # deploy!
+      - run:
+          name: deploy app
+          working_directory: ~/repo
+          command: |
+            if [ ! "${CIRCLE_BRANCH}" == "master" ] && [ ! "${CIRCLE_BRANCH}" == "gcp-deployment" ]; then
+              echo "No need to deploy"
+            else
+              ############################################
+              #   GCP
+              ############################################
+
+              sudo apt-get -y -qq update
+              sudo apt-get install apt-transport-https ca-certificates gnupg
+              echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+              curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+              sudo apt-get -y -qq update
+              sudo apt-get install google-cloud-sdk
+
+              echo ${GCP_PROJECT_KEY} | base64 --decode --ignore-garbage | sudo tee -a $HOME/gcloud-service-key.json
+              gcloud auth activate-service-account --key-file $HOME/gcloud-service-key.json
+              gcloud config set project $GCP_PROJECT_ID
+
+              echo "beta_settings:" >> ./env.yaml
+              echo "  cloud_sql_instances: ${GCP_DB_CONNECTION}" >> ./env.yaml
+              echo "env_variables:" >> ./env.yaml
+              echo "  GCP_DB_HOSTNAME: '/cloudsql/${GCP_DB_CONNECTION}'" >> ./env.yaml
+              echo "  GCP_DB_NAME: '${GCP_DB_NAME}'" >> ./env.yaml
+              echo "  GCP_DB_PASSWORD: '${GCP_DB_PASSWORD}'" >> ./env.yaml
+              echo "  GCP_DB_USERNAME: '${GCP_DB_USERNAME}'" >> ./env.yaml
+              echo "  GOOGLE_GEOCODE_API_KEY: '${GOOGLE_GEOCODE_API_KEY}'" >> ./env.yaml
+              echo "  PARTICLE_API_KEY: '${PARTICLE_API_KEY}'" >> ./env.yaml
+              echo "  GS_BUCKET_NAME: '${GS_BUCKET_NAME}'" >> ./env.yaml
+              echo "  GS_PROJECT_ID: '${GCP_PROJECT_ID}'" >> ./env.yaml
+              echo "  GOOGLE_APPLICATION_CREDENTIALS: './gcloud-service-key.json'" >> ./env.yaml
+
+              pipenv run python manage.py collectstatic
+              gsutil -m rsync -r ./static gs://static.varunaiot.com/
+              rm -rf ./static
+              pipenv --rm
+              
+              mv .appengine/app.flexible.yaml .appengine/app.yaml
+              mv .appengine/* ./
+              cp ${HOME}/gcloud-service-key.json ./
+              rm Pipfile
+              rm Pipfile.lock
+
+              gcloud app deploy --quiet
+
+              curl --silent -i -H "Accept: text/html" -H "X-Appengine-AfterDeploy: true" https://varunaplatform.uc.r.appspot.com/cron/after-deploy/ &> /dev/null
+
+              ############################################
+              #   AWS
+              ############################################
+
+              if false; then
+                sudo pip install awsebcli
+                mkdir ~/.aws
+                touch ~/.aws/config
+                chmod 600 ~/.aws/config
+                echo "[profile eb-cli]" > ~/.aws/config
+                echo "aws_access_key_id=$AWS_ACCESS_KEY_ID" >> ~/.aws/config
+                echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" >> ~/.aws/config
+                eb deploy VarunaBackendApp-env --verbose --profile eb-cli
+              fi
+            fi

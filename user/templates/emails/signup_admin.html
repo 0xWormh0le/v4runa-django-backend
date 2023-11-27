@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .btn {
+            padding: 0.5em 1em;
+            background-color: #086e9e;
+            color: white !important;
+            border-radius: 5px;
+            display: inline-block;
+            transition: opacity ease .5s;
+            margin: 0.5em;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            opacity: .7;
+        }
+
+        .btn-primary {
+            background-color: #086e9e;
+        }
+    </style>
+    <title>New User Signup in Varuna</title>
+</head>
+<body>
+    <h1>New User Signup in Varuna</h1>
+    <p>Varuna has a new sign up with user {{ user.first_name|title }} {{ user.last_name|title }} at {{ user.date_joined|date:"F j Y P" }}</p>
+    
+    <p>Name: {{ user.first_name|title }} {{ user.last_name|title }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>Water Utility: {{ user.profile.water_utility }}</p>
+    <p>Subscription Type: {{ user_type|title }}</p>
+    <p>Phone Number: {{ user.profile.phone_number }}</p>
+    <p>Text to Admin: {{ user.profile.subscribe_desc }}</p>
+
+    {% load i18n admin_urls %}
+    <a class="btn btn-primary" href="{{ hostname }}{% url opts|admin_urlname:'change' user.pk %}">Review</a>
+    <a class="btn btn-primary" href="{{ hostname }}{% url opts|admin_urlname:'changelist' %}">Go see {{ unapproved_count }} new sign-up users</a>
+</body>
+</html>
